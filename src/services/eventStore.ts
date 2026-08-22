@@ -20,6 +20,19 @@ import type {
  */
 export const MAX_RETAINED_EVENTS = 12_000;
 
+/**
+ * How far into the (newest-first) collection to look when checking whether an
+ * arriving event is one we already hold.
+ *
+ * A real backend replays recent events when a dropped WebSocket reconnects, so
+ * the same detection can arrive twice. Duplicates are never merely cosmetic
+ * here: the feed keys rows by `id`, and the KPI, risk-score, and attack-source
+ * calculations all count events, so a duplicate inflates every number on the
+ * dashboard. Replayed events are by definition recent, so scanning the head is
+ * sufficient and keeps this O(1) rather than O(n) per arrival.
+ */
+const DEDUPE_SCAN_DEPTH = 500;
+
 export const EMPTY_FILTERS: EventFilters = {
   severities: [],
   query: '',
@@ -35,14 +48,32 @@ export const EMPTY_FILTERS: EventFilters = {
  * path is O(1) and never re-sorts the full collection on every arrival.
  */
 export function addEvent(events: SecurityEvent[], incoming: SecurityEvent): SecurityEvent[] {
+  for (let i = 0; i < Math.min(events.length, DEDUPE_SCAN_DEPTH); i += 1) {
+    if (events[i]!.id === incoming.id) return events;
+  }
   const next = [incoming, ...events];
   return next.length > MAX_RETAINED_EVENTS ? next.slice(0, MAX_RETAINED_EVENTS) : next;
 }
 
-/** Normalizes a provider snapshot into the newest-first invariant. */
+/**
+ * Normalizes a provider snapshot into the newest-first invariant, dropping
+ * duplicate ids.
+ *
+ * Deduping here as well as in `addEvent` is not redundant: while the feed is
+ * paused, arriving events bypass `addEvent` entirely and are buffered, then
+ * flushed through this function on resume. That flush is exactly where a
+ * reconnect replay would otherwise introduce duplicates.
+ */
 export function initializeEvents(events: SecurityEvent[]): SecurityEvent[] {
-  const sorted = [...events].sort((a, b) => b.timestamp - a.timestamp);
-  return sorted.length > MAX_RETAINED_EVENTS ? sorted.slice(0, MAX_RETAINED_EVENTS) : sorted;
+  const seen = new Set<string>();
+  const unique: SecurityEvent[] = [];
+  for (const event of events) {
+    if (seen.has(event.id)) continue;
+    seen.add(event.id);
+    unique.push(event);
+  }
+  unique.sort((a, b) => b.timestamp - a.timestamp);
+  return unique.length > MAX_RETAINED_EVENTS ? unique.slice(0, MAX_RETAINED_EVENTS) : unique;
 }
 
 /** Applies an analyst action to one event, returning a new collection. */

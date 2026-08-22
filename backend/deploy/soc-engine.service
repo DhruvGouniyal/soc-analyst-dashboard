@@ -1,0 +1,41 @@
+[Unit]
+Description=SOC Detection Engine
+Documentation=https://github.com/DhruvGouniyal/soc-analyst-dashboard
+After=network-online.target rsyslog.service
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=soc-engine
+Group=soc-engine
+# Read access to /var/log/auth.log and /var/log/kern.log, both root:adm 0640.
+# Stated explicitly rather than relying on /etc/group so the dependency is
+# visible and survives someone editing this unit later.
+SupplementaryGroups=adm
+
+WorkingDirectory=/opt/soc-engine
+EnvironmentFile=-/etc/soc-engine/soc-engine.env
+
+# --workers 1 is REQUIRED, not a default. The event store, the correlators and
+# the WebSocket client set all live in this process. A second worker would hold
+# a different history and a different set of clients, so the dashboard would
+# see a fraction of reality depending on which worker answered. Never run this
+# behind gunicorn or any multi-process manager.
+ExecStart=/opt/soc-engine/.venv/bin/uvicorn soc_engine.main:app \
+          --host 0.0.0.0 --port 8000 --workers 1 --no-access-log
+
+Restart=always
+RestartSec=2
+
+# Hardening. ProtectSystem=strict still permits reading /var/log.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

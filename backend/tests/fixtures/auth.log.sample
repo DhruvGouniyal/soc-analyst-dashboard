@@ -1,0 +1,21 @@
+Aug 22 11:40:58 ubuntu-victim sshd[24810]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.56.106  user=root
+Aug 22 11:40:59 ubuntu-victim sshd[24810]: Failed password for root from 192.168.56.106 port 51234 ssh2
+Aug 22 11:41:02 ubuntu-victim sshd[24811]: Failed password for root from 192.168.56.106 port 51236 ssh2
+Aug 22 11:41:05 ubuntu-victim sshd[24812]: Invalid user admin from 192.168.56.106 port 51240
+Aug 22 11:41:05 ubuntu-victim sshd[24812]: Failed password for invalid user admin from 192.168.56.106 port 51240 ssh2
+Aug 22 11:41:08 ubuntu-victim sshd[24813]: Failed password for root from 192.168.56.106 port 51244 ssh2
+Aug 22 11:41:11 ubuntu-victim sshd[24814]: Failed password for root from 192.168.56.106 port 51248 ssh2
+Aug 22 11:41:12 ubuntu-victim sshd[24814]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.56.106
+Aug  2 09:00:01 ubuntu-victim sshd[19001]: Failed password for ubuntu from 10.10.10.24 port 40001 ssh2
+Aug 22 11:42:10 ubuntu-victim sshd[24830]: Accepted password for ubuntu from 192.168.56.106 port 51290 ssh2
+Aug 22 11:43:01 ubuntu-victim sshd[24840]: Invalid user  from 185.220.101.47 port 60001
+Aug 22 11:43:03 ubuntu-victim sshd[24840]: Connection closed by invalid user  185.220.101.47 port 60001 [preauth]
+Aug 22 11:44:00 ubuntu-victim sshd[24850]: Failed password for postgres from 2001:db8::dead:beef port 40222 ssh2
+Aug 22 11:45:00 ubuntu-victim sshd[24860]: error: maximum authentication attempts exceeded for root from 192.168.56.107 port 41000 ssh2 [preauth]
+Aug 22 11:46:00 ubuntu-victim sudo:   deploy : 3 incorrect password attempts ; TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/id
+Aug 22 11:47:00 ubuntu-victim sudo:   guest : user NOT in sudoers ; TTY=pts/2 ; PWD=/home/guest ; USER=root ; COMMAND=/bin/bash
+Aug 22 11:48:00 ubuntu-victim su[25000]: FAILED SU (to root) deploy on pts/3
+Aug 22 11:49:00 ubuntu-victim sshd[25010]: Server listening on 0.0.0.0 port 22.
+Aug 22 11:49:30 ubuntu-victim sshd[25011]: Received disconnect from 192.168.56.106 port 51300:11: Bye Bye [preauth]
+Aug 22 11:50:00 ubuntu-victim sshd[25012]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by (uid=0)
+Dec 31 23:59:58 ubuntu-victim sshd[26000]: Failed password for root from 192.168.56.106 port 59999 ssh2

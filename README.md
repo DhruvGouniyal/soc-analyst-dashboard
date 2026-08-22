@@ -1,12 +1,20 @@
 # SOC Command Center
 
 A security operations console for the Kali → Ubuntu → detection-engine lab pipeline.
-Runs today on a seeded mock data layer; the dashboard swaps onto the real Ubuntu
-collectors by setting one environment variable.
+Runs on a seeded mock data layer out of the box, and switches to live data from a real
+Ubuntu host by setting one environment variable.
 
 ```
 Kali (attacker) ──attacks──▶ Ubuntu (victim) ──logs──▶ Detection Engine ──▶ this dashboard
+                                                       └── backend/ ──┘
 ```
+
+This repository contains **both halves**:
+
+| | |
+|---|---|
+| `src/` | The dashboard — React + TypeScript + Vite |
+| `backend/` | The detection engine — Python + FastAPI, runs on the Ubuntu victim ([docs](backend/README.md)) |
 
 ## Running it
 
@@ -29,18 +37,29 @@ can render flawlessly while every figure on it is wrong — this catches that.
 
 ## Connecting the real Ubuntu backend
 
-Set the backend URL and restart. No component changes.
+Install the detection engine on the victim, then point the dashboard at it. No
+component changes.
+
+**On the Ubuntu victim (192.168.56.105):**
 
 ```bash
-# .env.local
-VITE_SOC_API_URL=http://192.168.56.105:8000
+cd backend
+./deploy/preflight.sh      # read-only: reports what this host can actually detect
+sudo ./deploy/install.sh   # service user, venv, config, systemd unit, start
+```
+
+**On the machine running the dashboard:**
+
+```bash
+echo 'VITE_SOC_API_URL=http://192.168.56.105:8000' > .env.local
+npm run dev     # RESTART it — VITE_ vars are build-time substitutions, HMR won't do it
 ```
 
 `src/data/providers/index.ts` then returns `UbuntuSecurityEventProvider` instead of the
-mock. That provider is complete working code — an HTTP + WebSocket client with
-exponential-backoff reconnect — it simply has no server to talk to yet.
+mock, and the sidebar changes from **Mock Data Source** to **Backend Connected** — so
+the data's origin is never ambiguous. If it still says Mock, Vite wasn't restarted.
 
-**Backend contract it expects:**
+**The wire contract:**
 
 ```
 GET  {VITE_SOC_API_URL}/api/events?since=<epoch_ms>
@@ -51,12 +70,13 @@ WS   {VITE_SOC_API_URL}/ws/events
      -> { type: 'hosts', payload: RawHost[] }
 ```
 
-If your field names differ, change **only** `normalizeEvent()` in
-`UbuntuSecurityEventProvider.ts`. It is the single translation point between
-backend-shaped data and the dashboard schema; nothing downstream sees raw payloads.
+If you swap in a different backend whose field names differ, change **only**
+`normalizeEvent()` in `UbuntuSecurityEventProvider.ts`. It is the single translation
+point between backend-shaped data and the dashboard schema; nothing downstream ever
+sees a raw payload.
 
-Until a backend is configured the sidebar reads **Mock Data Source** rather than
-**Backend Connected**, so the data's origin is never ambiguous.
+See [backend/README.md](backend/README.md) for what the engine detects, what it
+deliberately does not, and the contract mistakes that fail silently.
 
 ## Architecture
 

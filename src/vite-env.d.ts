@@ -16,8 +16,7 @@ interface ImportMetaEnv {
 
   /**
    * URL of the companion ThreatPulse-AI app, opened from the sidebar link.
-   * Defaults to its dev URL (`http://localhost:3000`); set to the deployed URL
-   * for a shared demo.
+   * Defaults to its Railway deployment; override for another environment.
    */
   readonly VITE_THREATPULSE_URL?: string;
 }

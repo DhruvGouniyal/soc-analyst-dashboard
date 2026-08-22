@@ -135,11 +135,11 @@ export interface ExternalNavLink {
 /**
  * ThreatPulse-AI, the companion evidence-investigation app. Build-time
  * configurable via `VITE_THREATPULSE_URL` (mirrors how the backend URL is set),
- * defaulting to where ThreatPulse runs in development. The `?.` guard keeps the
+ * defaulting to its Railway deployment. The `?.` guard keeps the
  * expression safe under plain Node/tsx, where `import.meta.env` is undefined.
  */
 export const THREATPULSE_URL =
-  import.meta.env?.VITE_THREATPULSE_URL?.trim() || 'http://localhost:3000';
+  import.meta.env?.VITE_THREATPULSE_URL?.trim() || 'https://threatpulse.up.railway.app/';
 
 export const EXTERNAL_LINKS: ExternalNavLink[] = [
   { label: 'ThreatPulse AI', icon: 'BrainCircuit', href: THREATPULSE_URL },

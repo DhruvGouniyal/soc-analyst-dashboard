@@ -77,7 +77,7 @@ fi
 if command -v ufw >/dev/null && ufw status 2>/dev/null | grep -qi active; then
   ufw status 2>/dev/null | grep -q '8000' \
     && pass "ufw permits port 8000" \
-    || warn "ufw is active but has no rule for 8000 — run: sudo ufw allow from 192.168.56.0/24 to any port 8000 proto tcp"
+    || warn "ufw is active but has no rule for 8000 — run: sudo ufw allow from 10.139.116.0/24 to any port 8000 proto tcp"
 fi
 echo
 

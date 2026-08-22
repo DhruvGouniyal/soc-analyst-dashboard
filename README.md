@@ -40,18 +40,21 @@ can render flawlessly while every figure on it is wrong — this catches that.
 Install the detection engine on the victim, then point the dashboard at it. No
 component changes.
 
-**On the Ubuntu victim (192.168.56.105):**
+**On the Ubuntu victim (e.g. 10.139.116.20):**
 
 ```bash
 cd backend
 ./deploy/preflight.sh      # read-only: reports what this host can actually detect
 sudo ./deploy/install.sh   # service user, venv, config, systemd unit, start
+# then set SOC_VICTIM_IP in /etc/soc-engine/soc-engine.env and restart the service
 ```
 
-**On the machine running the dashboard:**
+**On the machine running the dashboard** — set both to the victim's address:
 
 ```bash
-echo 'VITE_SOC_API_URL=http://192.168.56.105:8000' > .env.local
+# .env.local
+VITE_SOC_API_URL=http://10.139.116.20:8000
+VITE_SOC_VICTIM_IP=10.139.116.20
 npm run dev     # RESTART it — VITE_ vars are build-time substitutions, HMR won't do it
 ```
 

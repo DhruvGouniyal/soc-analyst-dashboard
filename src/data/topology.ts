@@ -8,7 +8,21 @@
  */
 import type { Host } from '@/types/security';
 
-export const VICTIM_IP = '192.168.56.105';
+/**
+ * The monitored host's IP.
+ *
+ * This is the one topology value consumed by *live* runtime, not just mock
+ * generation: `computeTopSources` excludes it so the victim never ranks as its
+ * own attacker. On a DHCP network the real address changes, so it is read from
+ * `VITE_SOC_VICTIM_IP` (set alongside `VITE_SOC_API_URL`) and only falls back
+ * to the lab default when unset — which keeps mock/demo mode and the offline
+ * `npm run verify` harness working unchanged.
+ *
+ * The `?.` after `import.meta.env` is load-bearing: the verify script imports
+ * this module through `metrics.ts` under plain Node/tsx, where `import.meta.env`
+ * is `undefined` and an unguarded access would throw at import time.
+ */
+export const VICTIM_IP = import.meta.env?.VITE_SOC_VICTIM_IP?.trim() || '192.168.56.105';
 export const ATTACKER_IP = '192.168.56.106';
 export const SECONDARY_ATTACKER_IP = '192.168.56.107';
 export const SENSOR_IP = '192.168.56.104';

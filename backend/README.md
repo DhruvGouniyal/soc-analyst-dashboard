@@ -18,10 +18,12 @@ sudo ./deploy/install.sh       # user, venv, config, systemd unit, start
 journalctl -u soc-engine -f
 ```
 
-Then on the machine running the dashboard:
+Then on the machine running the dashboard, set both to the victim's address:
 
 ```bash
-echo 'VITE_SOC_API_URL=http://192.168.56.105:8000' > .env.local
+# .env.local
+VITE_SOC_API_URL=http://10.139.116.20:8000
+VITE_SOC_VICTIM_IP=10.139.116.20
 npm run dev     # RESTART it — VITE_ vars are build-time substitutions
 ```
 
@@ -123,7 +125,7 @@ that renders perfectly and shows the wrong thing. `models.py` and
 | **`time.time()` in a correlator** | Backfill emits zero historical brute-force events. |
 | **More than one uvicorn worker** | Split store and split client set; the dashboard sees a fraction of reality. |
 | **`host` ≠ a published host id** | Events join to no host: zero host risk, empty host filter. |
-| **Victim IP ≠ `192.168.56.105`** | The monitored host ranks itself in Top Attack Sources. |
+| **`SOC_VICTIM_IP` ≠ the dashboard's `VITE_SOC_VICTIM_IP`** | The monitored host ranks itself in Top Attack Sources. |
 | **Ports as strings** | Become `null` — there are no `src_port`/`dest_port` aliases. |
 | **Float `cpu`/`memory`** | The host table renders `23.400000000000002%`. |
 

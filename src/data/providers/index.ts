@@ -12,7 +12,7 @@ import { MockSecurityEventProvider } from './MockSecurityEventProvider';
 import { UbuntuSecurityEventProvider } from './UbuntuSecurityEventProvider';
 import type { SecurityEventProvider } from './types';
 
-/** Backend base URL, e.g. `http://192.168.56.105:8000`. Unset ⇒ mock data. */
+/** Backend base URL, e.g. `http://10.139.116.20:8000`. Unset ⇒ mock data. */
 const API_URL = import.meta.env.VITE_SOC_API_URL?.trim();
 
 /** True when a real backend is configured. Surfaced in the UI banner. */

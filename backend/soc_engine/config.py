@@ -110,7 +110,11 @@ class Settings:
     cors_origin_regex: str = field(
         default_factory=lambda: _env_str(
             "SOC_CORS_ORIGIN_REGEX",
-            r"http://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3})(:\d+)?",
+            # Admits localhost, the 10.139.116.x hotspot LAN, and any 192.168.x
+            # network, so the dashboard works whether it is opened at
+            # localhost:5173 or by the machine's LAN IP. Override for a
+            # different subnet.
+            r"http://(localhost|127\.0\.0\.1|10\.139\.116\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3})(:\d+)?",
         )
     )
 

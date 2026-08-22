@@ -1,6 +1,8 @@
 import {
   Bell,
+  BrainCircuit,
   Crosshair,
+  ExternalLink,
   FileText,
   Flame,
   LayoutGrid,
@@ -12,7 +14,14 @@ import {
   X,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
-import { NAV_PRIMARY, NAV_SECONDARY, type NavItem, type ViewKey } from '@/config/navigation';
+import {
+  EXTERNAL_LINKS,
+  NAV_PRIMARY,
+  NAV_SECONDARY,
+  type ExternalNavLink,
+  type NavItem,
+  type ViewKey,
+} from '@/config/navigation';
 import { HOST_IDS } from '@/data/topology';
 import { cn } from '@/lib/cn';
 import { useSecurityFeed } from '@/state/useSecurityFeed';
@@ -28,6 +37,7 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   ScrollText,
   FileText,
   Settings,
+  BrainCircuit,
 };
 
 interface SidebarProps {
@@ -103,6 +113,9 @@ export function Sidebar({ active, onNavigate, open, onClose, criticalCount }: Si
                     badgeCount={0}
                   />
                 ))}
+                {EXTERNAL_LINKS.map((link) => (
+                  <ExternalRow key={link.href} link={link} />
+                ))}
               </ul>
             </div>
             <SystemStatus />
@@ -164,6 +177,34 @@ function NavRow({
           </span>
         ) : null}
       </button>
+    </li>
+  );
+}
+
+/**
+ * A link to a companion app. Rendered as an anchor (not a view button) so it
+ * gets real open-in-new-tab semantics, with a trailing glyph marking it as
+ * leaving the dashboard.
+ */
+function ExternalRow({ link }: { link: ExternalNavLink }) {
+  const Icon = ICONS[link.icon] ?? ExternalLink;
+
+  return (
+    <li>
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noreferrer noopener"
+        title={`${link.label} — opens in a new tab`}
+        className={cn(
+          'group relative flex w-full items-center gap-2.5 rounded px-2 py-1.5 text-left text-xs',
+          'text-fg-muted transition-colors duration-100 hover:bg-surface-hover hover:text-fg',
+        )}
+      >
+        <Icon className="h-3.5 w-3.5 shrink-0 text-fg-dim" />
+        <span className="min-w-0 flex-1 truncate">{link.label}</span>
+        <ExternalLink className="h-3 w-3 shrink-0 text-fg-dim opacity-60" />
+      </a>
     </li>
   );
 }

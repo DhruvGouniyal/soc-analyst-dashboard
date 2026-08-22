@@ -116,3 +116,31 @@ export function getNavItem(key: ViewKey): NavItem {
   if (!item) throw new Error(`Unknown view: ${key}`);
   return item;
 }
+
+/**
+ * Links to companion tools that live outside this app.
+ *
+ * Kept separate from `NavItem` on purpose: those map to internal `ViewKey`
+ * routes and `getNavItem` throws on anything it can't route, so an external URL
+ * has no place in that union. These render as their own sidebar group and open
+ * in a new tab.
+ */
+export interface ExternalNavLink {
+  label: string;
+  /** lucide-react icon name, resolved in the Sidebar component. */
+  icon: string;
+  href: string;
+}
+
+/**
+ * ThreatPulse-AI, the companion evidence-investigation app. Build-time
+ * configurable via `VITE_THREATPULSE_URL` (mirrors how the backend URL is set),
+ * defaulting to where ThreatPulse runs in development. The `?.` guard keeps the
+ * expression safe under plain Node/tsx, where `import.meta.env` is undefined.
+ */
+export const THREATPULSE_URL =
+  import.meta.env?.VITE_THREATPULSE_URL?.trim() || 'http://localhost:3000';
+
+export const EXTERNAL_LINKS: ExternalNavLink[] = [
+  { label: 'ThreatPulse AI', icon: 'BrainCircuit', href: THREATPULSE_URL },
+];

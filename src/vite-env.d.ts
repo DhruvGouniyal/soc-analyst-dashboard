@@ -13,6 +13,13 @@ interface ImportMetaEnv {
    * backend's `SOC_VICTIM_IP`. Falls back to the lab default when unset.
    */
   readonly VITE_SOC_VICTIM_IP?: string;
+
+  /**
+   * URL of the companion ThreatPulse-AI app, opened from the sidebar link.
+   * Defaults to its dev URL (`http://localhost:3000`); set to the deployed URL
+   * for a shared demo.
+   */
+  readonly VITE_THREATPULSE_URL?: string;
 }
 
 interface ImportMeta {

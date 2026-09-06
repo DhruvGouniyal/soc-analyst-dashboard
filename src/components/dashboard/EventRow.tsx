@@ -36,9 +36,9 @@ export const EventRow = memo(function EventRow({ event, selected, onSelect, now 
       onClick={() => onSelect(event)}
       aria-pressed={selected}
       className={cn(
-        'relative flex w-full flex-col gap-1 border-b border-line/60 px-3 py-2 text-left',
+        'relative flex w-full flex-col gap-1 border-b border-[var(--separator)] px-3 py-2 text-left',
         'transition-colors duration-100',
-        selected ? 'bg-accent/10' : 'hover:bg-surface-hover',
+        selected ? 'bg-accent/10' : 'hover:bg-[var(--fill-1)]',
         isClosed && 'opacity-55',
         isNew && 'animate-event-enter',
       )}

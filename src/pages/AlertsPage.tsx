@@ -32,7 +32,7 @@ export function AlertsPage() {
 
   return (
     <div className="flex h-full min-h-0">
-      <div className="min-w-0 flex-1 p-3">
+      <div className="min-w-0 min-h-0 flex-1 p-5">
         <LiveEventFeed
           filters={filters}
           hosts={hosts}
@@ -44,6 +44,7 @@ export function AlertsPage() {
           paused={paused}
           bufferedCount={bufferedCount}
           onResume={() => setPaused(false)}
+          className="h-full"
         />
       </div>
 

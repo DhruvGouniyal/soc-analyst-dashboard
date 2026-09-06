@@ -16,25 +16,24 @@ interface PanelProps {
 /**
  * The standard container for every dashboard section.
  *
- * One consistent frame keeps the layout dense and predictable; panels differ
- * by content, never by chrome.
+ * One consistent frame keeps the layout predictable; panels differ by content,
+ * never by chrome.
  */
 export function Panel({ title, meta, actions, children, className, flush }: PanelProps) {
   return (
-    <section
-      className={cn(
-        'flex min-h-0 flex-col overflow-hidden rounded border border-line bg-surface',
-        className,
-      )}
-    >
-      <header className="flex h-10 shrink-0 items-center justify-between gap-3 border-b border-line px-3">
-        <div className="flex min-w-0 items-baseline gap-2">
-          <h2 className="label-caps truncate text-fg-muted">{title}</h2>
-          {meta ? <span className="truncate text-[11px] text-fg-dim tabular">{meta}</span> : null}
+    <section className={cn('liquid flex min-h-0 flex-col overflow-hidden', className)}>
+      <header className="flex min-h-[54px] shrink-0 items-center justify-between gap-3 px-5 pt-4 pb-2">
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h2 className="truncate text-[13.5px] leading-tight font-semibold tracking-tight text-fg">
+            {title}
+          </h2>
+          {meta ? (
+            <span className="truncate text-[11px] leading-tight text-fg-dim tabular">{meta}</span>
+          ) : null}
         </div>
-        {actions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
+        {actions ? <div className="flex shrink-0 items-center gap-1.5">{actions}</div> : null}
       </header>
-      <div className={cn('min-h-0 flex-1', flush ? '' : 'p-3')}>{children}</div>
+      <div className={cn('min-h-0 flex-1', flush ? '' : 'px-5 pt-1 pb-5')}>{children}</div>
     </section>
   );
 }

@@ -33,7 +33,7 @@ export function EventFilterBar({ filters, counts, hosts }: EventFilterBarProps) 
     state.eventTypes.length + state.hosts.length + state.statuses.length;
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 border-b border-line px-3 py-2">
+    <div className="flex flex-wrap items-center gap-1.5 border-b border-[var(--separator)] px-3 py-2">
       <label className="relative min-w-40 flex-1">
         <Search className="pointer-events-none absolute top-1/2 left-2 h-3 w-3 -translate-y-1/2 text-fg-dim" />
         <input
@@ -43,7 +43,7 @@ export function EventFilterBar({ filters, counts, hosts }: EventFilterBarProps) 
           placeholder="Search IP, event type, MITRE ID…"
           aria-label="Search security events"
           className={cn(
-            'h-6 w-full rounded border border-line bg-canvas pr-2 pl-7 text-[11px] text-fg',
+            'h-6 w-full rounded-[var(--radius-control)] border border-[var(--separator)] bg-[var(--fill-1)] pr-2 pl-7 text-[11px] text-fg',
             'placeholder:text-fg-dim focus:border-accent/60 focus:outline-none',
           )}
         />
@@ -81,7 +81,7 @@ export function EventFilterBar({ filters, counts, hosts }: EventFilterBarProps) 
         <button
           type="button"
           onClick={clear}
-          className="flex items-center gap-1 rounded px-1.5 py-1 text-[10.5px] text-fg-dim hover:bg-surface-hover hover:text-fg"
+          className="flex items-center gap-1 rounded-[var(--radius-control)] px-1.5 py-1 text-[10.5px] text-fg-dim hover:bg-[var(--fill-1)] hover:text-fg"
         >
           <X className="h-3 w-3" />
           Clear
@@ -110,11 +110,11 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        'flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10.5px] font-medium whitespace-nowrap',
+        'flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10.5px] font-medium whitespace-nowrap',
         'transition-colors duration-100',
         active
           ? (tone ?? 'border-accent/50 bg-accent/15 text-accent')
-          : 'border-line bg-canvas text-fg-dim hover:border-line-strong hover:text-fg-muted',
+          : 'border-[var(--separator)] bg-[var(--fill-1)] text-fg-dim hover:border-[var(--separator)] hover:text-fg-muted',
       )}
     >
       {label}
@@ -167,10 +167,10 @@ function AdvancedFilters({
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         className={cn(
-          'flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10.5px] font-medium',
+          'flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10.5px] font-medium',
           activeCount > 0
             ? 'border-accent/50 bg-accent/15 text-accent'
-            : 'border-line bg-canvas text-fg-dim hover:border-line-strong hover:text-fg-muted',
+            : 'border-[var(--separator)] bg-[var(--fill-1)] text-fg-dim hover:border-[var(--separator)] hover:text-fg-muted',
         )}
       >
         <ListFilter className="h-3 w-3" />
@@ -179,7 +179,7 @@ function AdvancedFilters({
       </button>
 
       {open ? (
-        <div className="absolute right-0 z-20 mt-1 max-h-80 w-56 overflow-y-auto rounded border border-line-strong bg-surface-raised p-2 shadow-xl">
+        <div className="absolute right-0 z-20 mt-1 max-h-80 w-56 overflow-y-auto rounded-[var(--radius-control)] border border-[var(--separator)] bg-[#2c2c2e] p-2 shadow-xl">
           <FilterSection title="Status">
             {STATUS_KEYS.map((status) => (
               <CheckRow
@@ -242,12 +242,12 @@ function CheckRow({
       onClick={onClick}
       role="checkbox"
       aria-checked={checked}
-      className="flex w-full items-center gap-2 rounded px-1 py-1 text-left text-[11px] text-fg-muted hover:bg-surface-hover hover:text-fg"
+      className="flex w-full items-center gap-2 rounded-[var(--radius-control)] px-1 py-1 text-left text-[11px] text-fg-muted hover:bg-[var(--fill-1)] hover:text-fg"
     >
       <span
         className={cn(
           'flex h-3 w-3 shrink-0 items-center justify-center rounded-[3px] border',
-          checked ? 'border-accent bg-accent/25 text-accent' : 'border-line-strong',
+          checked ? 'border-accent bg-accent/25 text-accent' : 'border-[var(--separator)]',
         )}
       >
         {checked ? <Check className="h-2.5 w-2.5" /> : null}

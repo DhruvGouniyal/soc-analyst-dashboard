@@ -73,29 +73,31 @@ export function AlertDetailPanel({ event, events, onClose, onAction, now }: Aler
         aria-modal="false"
         aria-label="Alert details"
         className={cn(
-          'fixed inset-y-0 right-0 z-50 flex w-full max-w-96 flex-col border-l border-line bg-surface shadow-2xl',
+          'fixed inset-y-0 right-0 z-50 flex w-full max-w-96 flex-col',
+          // Mirrors the sidebar: flat glass with the lit edge facing content.
+          'liquid-flat liquid-flat-l shadow-2xl',
           'lg:static lg:z-auto lg:w-88 lg:max-w-none lg:shadow-none',
         )}
       >
-        <header className="flex h-10 shrink-0 items-center justify-between gap-2 border-b border-line px-3">
+        <header className="flex h-10 shrink-0 items-center justify-between gap-2 border-b border-[var(--separator)] px-3">
           <h2 className="label-caps">Alert Details</h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close alert details"
-            className="rounded p-1 text-fg-dim hover:bg-surface-hover hover:text-fg"
+            className="rounded-[var(--radius-control)] p-1 text-fg-dim hover:bg-[var(--fill-1)] hover:text-fg"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className={cn('border-b border-line px-3 py-3', styles.tint)}>
+          <div className={cn('border-b border-[var(--separator)] px-3 py-3', styles.tint)}>
             <h3 className="mb-2 text-sm leading-tight font-semibold text-fg">{meta.label}</h3>
             <div className="flex flex-wrap items-center gap-1.5">
               <SeverityBadge severity={event.severity} />
               <StatusBadge status={event.status} />
-              <span className="rounded border border-line bg-canvas px-1.5 py-0.5 text-[10px] text-fg-dim">
+              <span className="rounded-full border border-[var(--separator)] bg-[var(--fill-1)] px-2 py-0.5 text-[10px] text-fg-dim">
                 {event.confidence}% confidence
               </span>
             </div>
@@ -156,14 +158,14 @@ export function AlertDetailPanel({ event, events, onClose, onAction, now }: Aler
 
           {event.rawLog ? (
             <Section title={`Raw Log · ${event.logSource}`}>
-              <pre className="overflow-x-auto rounded border border-line bg-canvas p-2 font-mono text-[10px] leading-relaxed break-all whitespace-pre-wrap text-fg-muted">
+              <pre className="overflow-x-auto rounded-[var(--radius-control)] border border-[var(--separator)] bg-[var(--fill-1)] p-2 font-mono text-[10px] leading-relaxed break-all whitespace-pre-wrap text-fg-muted">
                 {event.rawLog}
               </pre>
             </Section>
           ) : null}
         </div>
 
-        <footer className="shrink-0 border-t border-line p-3">
+        <footer className="shrink-0 border-t border-[var(--separator)] p-3">
           <div className="label-caps mb-2">Recommended Actions</div>
           <div className="flex flex-wrap gap-1.5">
             {meta.actions.map((action) => {
@@ -199,7 +201,7 @@ export function AlertDetailPanel({ event, events, onClose, onAction, now }: Aler
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-b border-line px-3 py-2.5 last:border-b-0">
+    <section className="border-b border-[var(--separator)] px-3 py-2.5 last:border-b-0">
       <div className="label-caps mb-1.5">{title}</div>
       {children}
     </section>

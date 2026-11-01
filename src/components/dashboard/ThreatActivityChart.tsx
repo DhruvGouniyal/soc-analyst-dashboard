@@ -46,7 +46,7 @@ function ChartTooltip({
   const total = payload.reduce((sum, item) => sum + (item.value ?? 0), 0);
 
   return (
-    <div className="rounded-[var(--radius-control)] border border-[var(--separator)] bg-[#2c2c2e] px-3 py-2.5 shadow-xl">
+    <div className="rounded border border-line-strong bg-surface-raised px-2.5 py-2 shadow-lg">
       <div className="mb-1.5 text-[10.5px] font-medium text-fg tabular">{label}</div>
       {rows.length === 0 ? (
         <div className="text-[10.5px] text-fg-dim">No events</div>
@@ -67,7 +67,7 @@ function ChartTooltip({
           })}
         </ul>
       )}
-      <div className="mt-1.5 flex items-center justify-between gap-3 border-t border-[var(--separator)] pt-1.5 text-[10.5px]">
+      <div className="mt-1.5 flex items-center justify-between gap-3 border-t border-line pt-1.5 text-[10.5px]">
         <span className="text-fg-dim">Total</span>
         <span className="font-semibold text-fg tabular">{total}</span>
       </div>
@@ -124,10 +124,10 @@ export function ThreatActivityChart({ events, loading, now }: ThreatActivityChar
           options={TIME_RANGE_KEYS.map((key) => ({ value: key, label: RANGE_LABELS[key] }))}
         />
       }
-      className="min-h-[340px]"
+      className="min-h-[260px]"
     >
       {loading ? (
-        <Skeleton className="h-[240px] w-full" />
+        <Skeleton className="h-[200px] w-full" />
       ) : (
         <div className="flex h-full flex-col">
           {/* Legend doubles as a series filter. */}
@@ -141,14 +141,14 @@ export function ThreatActivityChart({ events, loading, now }: ThreatActivityChar
                   onClick={() => toggleSeries(severity)}
                   aria-pressed={!isHidden}
                   className={cn(
-                    'flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] transition-opacity',
+                    'flex items-center gap-1.5 rounded px-1 py-0.5 text-[10.5px] transition-opacity',
                     isHidden ? 'opacity-35' : 'opacity-100',
-                    'hover:bg-[var(--fill-1)]',
+                    'hover:bg-surface-hover',
                   )}
                   title={isHidden ? `Show ${SEVERITY_META[severity].label}` : `Hide ${SEVERITY_META[severity].label}`}
                 >
                   <span
-                    className={cn('h-2 w-2.5 rounded-full', SEVERITY_STYLES[severity].bar)}
+                    className={cn('h-1.5 w-4 rounded-sm', SEVERITY_STYLES[severity].bar)}
                     aria-hidden="true"
                   />
                   <span className="text-fg-muted">{SEVERITY_META[severity].label}</span>
@@ -164,54 +164,29 @@ export function ThreatActivityChart({ events, loading, now }: ThreatActivityChar
             Anchoring it to an absolutely-positioned box gives it a definite
             containing block while keeping the width fluid.
           */}
-          <div className="relative min-h-[250px] flex-1">
+          <div className="relative min-h-[180px] flex-1">
             <div className="absolute inset-0">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={buckets} margin={{ top: 4, right: 4, bottom: 0, left: -8 }}>
-                  {/* Each series fades to nothing at the baseline so overlapping
-                      bands stay readable where the stack is deep. */}
-                  <defs>
-                    {SEVERITY_ORDER.map((severity) => (
-                      <linearGradient
-                        key={severity}
-                        id={`activity-fill-${severity}`}
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor={SEVERITY_STYLES[severity].hex}
-                          stopOpacity={0.38}
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor={SEVERITY_STYLES[severity].hex}
-                          stopOpacity={0.04}
-                        />
-                      </linearGradient>
-                    ))}
-                  </defs>
-                  <CartesianGrid stroke="#26262e" strokeDasharray="2 4" vertical={false} />
+                <AreaChart data={buckets} margin={{ top: 4, right: 4, bottom: 0, left: -18 }}>
+                  <CartesianGrid stroke="#1d2634" strokeDasharray="2 4" vertical={false} />
                   <XAxis
                     dataKey="label"
-                    tick={{ fill: '#6b6b78', fontSize: 10.5 }}
+                    tick={{ fill: '#5a6779', fontSize: 10 }}
                     tickLine={false}
-                    axisLine={{ stroke: '#26262e' }}
+                    axisLine={{ stroke: '#1d2634' }}
                     interval={tickInterval}
                     minTickGap={8}
                   />
                   <YAxis
-                    tick={{ fill: '#6b6b78', fontSize: 10.5 }}
+                    tick={{ fill: '#5a6779', fontSize: 10 }}
                     tickLine={false}
                     axisLine={false}
-                    width={44}
+                    width={40}
                     allowDecimals={false}
                   />
                   <Tooltip
                     content={<ChartTooltip />}
-                    cursor={{ stroke: '#34343f', strokeWidth: 1 }}
+                    cursor={{ stroke: '#2b3849', strokeWidth: 1 }}
                   />
                   {/* Stacked least-severe first so critical sits on top. */}
                   {[...SEVERITY_ORDER]
@@ -224,8 +199,9 @@ export function ThreatActivityChart({ events, loading, now }: ThreatActivityChar
                         dataKey={severity}
                         stackId="severity"
                         stroke={SEVERITY_STYLES[severity].hex}
-                        strokeWidth={1.75}
-                        fill={`url(#activity-fill-${severity})`}
+                        strokeWidth={1.25}
+                        fill={SEVERITY_STYLES[severity].hex}
+                        fillOpacity={0.22}
                         isAnimationActive={false}
                         dot={false}
                         activeDot={{ r: 2.5, strokeWidth: 0 }}

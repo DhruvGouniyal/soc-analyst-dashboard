@@ -1,87 +1,41 @@
 @import 'tailwindcss';
 
 /*
- * SOC Command Center — monochrome.
- *
- * The palette is Apple's own dark-mode system ramp, used verbatim. Nothing here
- * is invented: #1C1C1E / #2C2C2E / #3A3A3C / #48484A / #636366 / #8E8E93 are
- * systemGray6 through systemGray, and the label alphas are Apple's
- * secondaryLabel and tertiaryLabel values.
- *
- * COLOR DISCIPLINE — the whole interface is black, white and grey. Exactly one
- * hue exists in the entire app: systemRed #FF453A, spent only on critical.
- * Severity below critical is carried by a greyscale intensity ramp plus an icon
- * plus a text label, never by hue. That is deliberate: when everything is
- * coloured, nothing reads as urgent. Reserving the only colour for the only
- * thing that must interrupt you is what makes it work.
- *
- * MOTION — Apple's presentation curve, cubic-bezier(0.32, 0.72, 0, 1). Fast
- * departure, long soft settle. Durations run longer than typical web (360ms
- * standard) because the long tail is what reads as expensive.
- *
- * SHAPE — macOS proportions: 12px cards, 8px controls, full-round pills.
+ * SOC Command Center design tokens.
+ * Restrained, high-density console palette: near-black blue canvas, low-chroma
+ * surfaces, and severity colors chosen for contrast rather than glow.
  */
 @theme {
-  /* Apple dark system ramp */
-  --color-canvas: #000000;
-  --color-surface: #1c1c1e;
-  --color-surface-raised: #2c2c2e;
-  --color-surface-hover: #3a3a3c;
-  --color-line: #38383a;
-  --color-line-strong: #48484a;
+  /* Structure */
+  --color-canvas: #090c12;
+  --color-surface: #0e131b;
+  --color-surface-raised: #131924;
+  --color-surface-hover: #171e2b;
+  --color-line: #1d2634;
+  --color-line-strong: #2b3849;
 
-  /* Apple label ramp */
-  --color-fg: #ffffff;
-  --color-fg-muted: #a1a1a6;
-  --color-fg-dim: #8a8a91;
+  /* Text */
+  --color-fg: #dbe3ee;
+  --color-fg-muted: #8695a9;
+  --color-fg-dim: #5a6779;
 
-  /*
-   * Severity. Critical is the only hue in the product; the rest is a
-   * descending greyscale intensity ramp.
-   */
-  --color-crit: #ff453a;
-  --color-crit-dim: #3a0f0c;
-  --color-high: #ffffff;
-  --color-high-dim: #2c2c2e;
-  --color-med: #8e8e93;
-  --color-med-dim: #232325;
-  --color-low: #48484a;
-  --color-low-dim: #1c1c1e;
+  /* Severity — deliberately desaturated vs. neon */
+  --color-crit: #e5484d;
+  --color-crit-dim: #3d1416;
+  --color-high: #ef7014;
+  --color-high-dim: #3a1e08;
+  --color-med: #e0a11a;
+  --color-med-dim: #362707;
+  --color-low: #3b9eff;
+  --color-low-dim: #0f2740;
 
-  /* Status reads as presence/absence, not green/red. */
-  --color-ok: #ffffff;
-  --color-ok-dim: #1c1c1e;
+  /* Status */
+  --color-ok: #3fa45b;
+  --color-ok-dim: #10240f;
+  --color-accent: #3b9eff;
 
-  /* "Accent" is white. Apple's monochrome accent. */
-  --color-accent: #ffffff;
-  --color-accent-dim: #2c2c2e;
-
-  --radius-card: 12px;
-  --radius-control: 8px;
-
-  /*
-   * Space Grotesk: a geometric grotesque with the slightly mechanical
-   * character sets that suit a security console, and far more identity than a
-   * system stack. JetBrains Mono carries every IP, port and timestamp.
-   */
-  --font-sans:
-    'Space Grotesk Variable', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
-}
-
-:root {
-  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
-  --ease-ios-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-fast: 240ms;
-  --dur: 360ms;
-  --dur-slow: 520ms;
-
-  /* Apple's dark separator, which is a translucent grey rather than a solid. */
-  --separator: rgb(84 84 88 / 0.65);
-  --fill-1: rgb(255 255 255 / 0.05);
-  --fill-2: rgb(255 255 255 / 0.09);
-  --fill-3: rgb(255 255 255 / 0.14);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
 }
 
 @layer base {
@@ -94,53 +48,42 @@
     color: var(--color-fg);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 13.5px;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-    overscroll-behavior: none;
+    font-size: 13px;
   }
 
-  /* Apple tightens tracking as type scales up; this mirrors that. */
-  h1,
-  h2,
-  h3 {
-    letter-spacing: -0.022em;
-  }
-
+  /* Console-style scrollbars: present but not decorative. */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgb(255 255 255 / 0.16) transparent;
+    scrollbar-color: var(--color-line-strong) transparent;
   }
   *::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
   *::-webkit-scrollbar-track {
     background: transparent;
   }
   *::-webkit-scrollbar-thumb {
-    background-color: rgb(255 255 255 / 0.16);
-    border-radius: 999px;
-    border: 3px solid transparent;
-    background-clip: content-box;
+    background-color: var(--color-line-strong);
+    border-radius: 4px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(255 255 255 / 0.28);
+    background-color: #3a4a5f;
   }
 
+  /* Keyboard users get an unmistakable focus ring; mouse users don't. */
   :focus-visible {
-    outline: 2px solid #ffffff;
-    outline-offset: 2px;
-    border-radius: var(--radius-control);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
   }
 }
 
 @layer utilities {
+  /* Micro-label used for panel headers and table columns. */
   .label-caps {
-    font-size: 10.5px;
-    font-weight: 590;
-    letter-spacing: 0.06em;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--color-fg-dim);
   }
@@ -148,89 +91,12 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
-
-  /*
-   * The card. Nearly flat: a raised grey plane, a hairline, and a shadow that
-   * only separates it from the black. Apple does not stack heavy elevation.
-   */
-  .surface-card {
-    border-radius: var(--radius-card);
-    background-color: var(--color-surface);
-    border: 1px solid var(--separator);
-    box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.6);
-  }
-
-  .icon-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    background-color: var(--fill-1);
-    border: 1px solid var(--separator);
-  }
-
-  .ios-transition {
-    transition-property: transform, opacity, background-color, border-color, color, box-shadow;
-    transition-duration: var(--dur);
-    transition-timing-function: var(--ease-ios);
-  }
-  .ios-transition-fast {
-    transition-property: transform, opacity, background-color, border-color, color, box-shadow;
-    transition-duration: var(--dur-fast);
-    transition-timing-function: var(--ease-ios);
-  }
-
-  /* Apple never scales a control more than ~2% on press. */
-  .ios-press {
-    transition:
-      transform var(--dur-fast) var(--ease-ios),
-      background-color var(--dur-fast) var(--ease-ios);
-  }
-  .ios-press:active {
-    transform: scale(0.97);
-  }
 }
 
-/* SpotlightCard (React Bits, MIT) — restyled to a white glow on grey. */
-.card-spotlight {
-  position: relative;
-  overflow: hidden;
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-  --spotlight-color: rgb(255 255 255 / 0.10);
-}
-
-.card-spotlight::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    320px circle at var(--mouse-x) var(--mouse-y),
-    var(--spotlight-color),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity var(--dur-slow) var(--ease-ios);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.card-spotlight:hover::before,
-.card-spotlight:focus-within::before {
-  opacity: 1;
-}
-
-.card-spotlight > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* New feed rows: a brief white wash that recedes on the presentation curve. */
+/* New rows entering the live feed: a brief tint, no bounce or slide. */
 @keyframes event-enter {
   from {
-    background-color: rgb(255 255 255 / 0.10);
+    background-color: color-mix(in oklab, var(--color-accent) 14%, transparent);
   }
   to {
     background-color: transparent;
@@ -238,7 +104,7 @@
 }
 
 .animate-event-enter {
-  animation: event-enter var(--dur-slow) var(--ease-ios-out);
+  animation: event-enter 1.2s ease-out;
 }
 
 @keyframes pulse-dot {
@@ -247,189 +113,12 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.35;
   }
 }
 
 .animate-pulse-dot {
-  animation: pulse-dot 2.4s var(--ease-ios) infinite;
-}
-
-/*
- * Film grain, done as a single static SVG turbulence tile rather than a canvas
- * repainted every frame. Visually equivalent at this opacity and costs nothing
- * per frame, which matters with a WebGL layer already running underneath.
- */
-/* 3D stage. Children of a .stage-3d get real perspective, not a fake skew. */
-.stage-3d {
-  perspective: 1100px;
-  perspective-origin: 50% 40%;
-}
-
-.tilt-3d {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-/* Lifts inner content off the card face so the tilt reads as depth. */
-.tilt-layer {
-  transform: translateZ(38px);
-  transform-style: preserve-3d;
-}
-
-/*
- * LIQUID GLASS
- *
- * Three layers make the material, and all three are required — drop any one and
- * it collapses back into ordinary glassmorphism:
- *   1. refraction  — the SVG lens bends the backdrop (Chromium; see @supports)
- *   2. specular rim — a lit top edge and a shadowed bottom edge, so the surface
- *                     reads as a solid with thickness rather than a flat film
- *   3. tint        — just enough fill to hold WCAG AA text contrast over a
- *                     moving shader, which is the part most web copies skip
- */
-.liquid {
-  position: relative;
-  border-radius: var(--radius-card);
-  /*
-   * Solid, not blurred.
-   *
-   * The page behind these panels is pitch black, so a backdrop blur would be
-   * sampling black and producing black — a per-frame compositor pass for zero
-   * visible difference. The graded tint and the specular rim below are what
-   * actually made this read as glass; those are kept, the cost is not.
-   */
-  background: linear-gradient(180deg, #16161a 0%, #101013 100%);
-  border: 1px solid rgb(255 255 255 / 0.14);
-  box-shadow:
-    /* specular: lit top edge, shadowed base — the "thickness" cue */
-    inset 0 1px 0 0 rgb(255 255 255 / 0.42),
-    inset 0 -1px 0 0 rgb(255 255 255 / 0.06),
-    inset 0 0 22px 0 rgb(255 255 255 / 0.05),
-    0 12px 40px -12px rgb(0 0 0 / 0.9);
-}
-
-/* Edge lensing: a bright hairline that fades away from the light source. */
-.liquid::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    145deg,
-    rgb(255 255 255 / 0.5) 0%,
-    rgb(255 255 255 / 0.06) 34%,
-    transparent 60%,
-    rgb(255 255 255 / 0.14) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.liquid-flat {
-  position: relative;
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 0.07) 0%, rgb(255 255 255 / 0.02) 100%),
-    rgb(12 12 15 / 0.86);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  backdrop-filter: blur(14px) saturate(150%);
-}
-
-/* Lit inner edge on the side that faces the content, not a full border. */
-.liquid-flat-r {
-  border-right: 1px solid rgb(255 255 255 / 0.12);
-  box-shadow: inset -1px 0 0 0 rgb(255 255 255 / 0.05);
-}
-.liquid-flat-l {
-  border-left: 1px solid rgb(255 255 255 / 0.12);
-  box-shadow: inset 1px 0 0 0 rgb(255 255 255 / 0.05);
-}
-.liquid-flat-b {
-  border-bottom: 1px solid rgb(255 255 255 / 0.12);
-  box-shadow: inset 0 -1px 0 0 rgb(255 255 255 / 0.05);
-}
-
-/*
- * The travelling sheen was removed on purpose.
- *
- * It animated `background-position`, which is NOT compositor-only: it forces a
- * repaint of every element carrying it, every frame. With ~18 glass surfaces on
- * screen that was a continuous full-page repaint loop for a decorative
- * highlight. The static graded rim on `.liquid::after` already reads as a lit
- * edge; the sense of flow comes from the shader moving behind the glass.
- */
-
-.liquid-control {
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.05) 100%),
-    rgb(20 20 23 / 0.80);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
-  backdrop-filter: blur(10px) saturate(150%);
-  border: 1px solid rgb(255 255 255 / 0.16);
-  box-shadow:
-    inset 0 1px 0 0 rgb(255 255 255 / 0.36),
-    0 4px 14px -6px rgb(0 0 0 / 0.8);
-}
-
-/*
- * NOTE ON REFRACTION.
- *
- * A previous revision drove `backdrop-filter: url(#liquid-glass)` with an
- * animated feTurbulence, which is the technically faithful way to reproduce
- * Apple's lensing. Measured: 2.8 FPS with 18 glass surfaces on screen, because
- * the browser re-evaluates procedural noise and re-runs a displacement pass per
- * element per frame. It is not viable at dashboard scale.
- *
- * What is kept is everything that reads as the same material and composites on
- * the GPU: blur + saturate, the graded tint, the specular rim, and the travelling
- * sheen below. The sense of flow comes from the shader moving *behind* the glass
- * rather than the glass distorting it — one GPU pass instead of eighteen.
- */
-
-/*
- * ADAPTIVE QUALITY
- *
- * Backdrop blur is re-evaluated every frame for every glass surface, so its
- * cost scales with the number of panes on screen, not with the page. Medium
- * tier keeps glass on the chrome the eye reads as "the app frame" and makes the
- * data panels opaque; low tier removes blur entirely. Colour, contrast, spacing
- * and layout are identical at every tier — only the material changes.
- */
-[data-tier='medium'] .liquid-flat {
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  backdrop-filter: blur(10px) saturate(140%);
-}
-
-[data-tier='low'] .liquid,
-[data-tier='low'] .liquid-flat,
-[data-tier='low'] .liquid-control {
-  background: #16161a;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-[data-tier='low'] .liquid::after {
-  display: none;
-}
-/* The pulse is the only always-on animation left; low tier stops it too. */
-[data-tier='low'] .animate-pulse-dot {
-  animation: none;
-}
-
-/* Blur is the whole effect; without transparency, fall back to a solid pane. */
-@media (prefers-reduced-transparency: reduce) {
-  .liquid,
-  .liquid-flat,
-  .liquid-control {
-    background: #16161a;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
+  animation: pulse-dot 2.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

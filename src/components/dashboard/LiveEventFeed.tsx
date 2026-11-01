@@ -29,13 +29,6 @@ interface LiveEventFeedProps {
   paused: boolean;
   bufferedCount: number;
   onResume: () => void;
-  /**
-   * Height constraint, supplied by the parent. The feed always scrolls
-   * internally, so whoever places it decides how tall it may get: the dashboard
-   * caps it so the grid row stays sane, the full-page triage view fills the
-   * viewport. Without a definite height the panel grows to fit every row.
-   */
-  className?: string;
 }
 
 export function LiveEventFeed({
@@ -49,17 +42,8 @@ export function LiveEventFeed({
   paused,
   bufferedCount,
   onResume,
-  className = 'min-h-[320px]',
 }: LiveEventFeedProps) {
   const counts = useMemo(() => countBySeverity(allEvents), [allEvents]);
-
-  /*
-   * Rows are memoized, but `now` ticks every 2s, which invalidated all 150 of
-   * them on every tick and made the feed the most expensive thing on the page.
-   * Relative ages are rendered at minute granularity, so a 10s clock is
-   * indistinguishable on screen and cuts row re-renders by 5x.
-   */
-  const rowNow = Math.floor(now / 10_000) * 10_000;
   const { results, totalCount, sortKey, setSort, sortDirection, active, clear } = filters;
   const visible = results.slice(0, RENDER_LIMIT);
 
@@ -82,7 +66,7 @@ export function LiveEventFeed({
         </Button>
       }
       flush
-      className={className}
+      className="min-h-[320px]"
     >
       <div className="flex h-full min-h-0 flex-col">
         <EventFilterBar filters={filters} counts={counts} hosts={hosts} />
@@ -126,13 +110,13 @@ export function LiveEventFeed({
                   event={event}
                   selected={event.id === selectedId}
                   onSelect={onSelect}
-                  now={rowNow}
+                  now={now}
                 />
               ))}
               {results.length > RENDER_LIMIT ? (
                 <div
                   className={cn(
-                    'border-t border-[var(--separator)] px-3 py-2 text-center text-[10.5px] text-fg-dim',
+                    'border-t border-line px-3 py-2 text-center text-[10.5px] text-fg-dim',
                   )}
                 >
                   Showing the {RENDER_LIMIT} most recent of{' '}

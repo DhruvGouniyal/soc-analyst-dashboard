@@ -5,7 +5,7 @@ import { Button } from './Button';
 
 /** Neutral shimmer placeholder used while the initial snapshot loads. */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('animate-pulse rounded-[var(--radius-control)] bg-[var(--fill-1)]', className)} />;
+  return <div className={cn('animate-pulse rounded bg-surface-raised', className)} />;
 }
 
 /** Skeleton shaped like a feed row, so loading doesn't shift the layout. */

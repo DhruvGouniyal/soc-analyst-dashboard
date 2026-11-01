@@ -32,7 +32,7 @@ export function SeverityBadge({ severity, size = 'default', className }: Severit
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-semibold tracking-wide uppercase',
+        'inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-semibold tracking-wide uppercase',
         size === 'compact' ? 'text-[10px]' : 'text-[10.5px]',
         styles.badge,
         className,

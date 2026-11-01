@@ -13,7 +13,6 @@ import { LiveEventFeed } from '@/components/dashboard/LiveEventFeed';
 import { SecurityScoreCard } from '@/components/dashboard/SecurityScoreCard';
 import { TopAttackSources } from '@/components/dashboard/TopAttackSources';
 import { ErrorState, Skeleton } from '@/components/ui/States';
-import AnimatedContent from '@/components/reactbits/AnimatedContent';
 
 /**
  * The charting library is by far the heaviest dependency. Splitting it out
@@ -102,7 +101,7 @@ export function DashboardPage() {
           title="Cannot reach the detection engine"
           message={error}
           onRetry={retry}
-          className="surface-card"
+          className="rounded border border-line bg-surface"
         />
       </div>
     );
@@ -111,7 +110,7 @@ export function DashboardPage() {
   return (
     <div className="flex h-full min-h-0">
       <div className="min-w-0 flex-1 overflow-y-auto">
-        <div className="space-y-4 p-5 xl:p-6">
+        <div className="space-y-2 p-3">
           {mode === 'demo' ? <DemoTimeline progress={demoProgress} /> : null}
 
           {/* Transport trouble after a successful load: warn, but keep the
@@ -119,14 +118,14 @@ export function DashboardPage() {
           {error && events.length > 0 ? (
             <div
               role="status"
-              className="flex items-center gap-2 rounded-[var(--radius-control)] border border-crit/40 bg-crit/10 px-4 py-2.5 text-[11.5px] text-crit"
+              className="flex items-center gap-2 rounded border border-crit/40 bg-crit/10 px-3 py-1.5 text-[11px] text-crit"
             >
               <span className="font-medium">Stream interrupted:</span>
               <span className="text-fg-muted">{error}</span>
               <button
                 type="button"
                 onClick={retry}
-                className="ml-auto rounded-full border border-crit/40 px-2.5 py-1 text-[11px] hover:bg-crit/15"
+                className="ml-auto rounded border border-crit/40 px-1.5 py-0.5 text-[10.5px] hover:bg-crit/15"
               >
                 Reconnect
               </button>
@@ -134,7 +133,7 @@ export function DashboardPage() {
           ) : null}
 
           <div>
-            <h2 className="label-caps mb-3">Security Overview</h2>
+            <h2 className="label-caps mb-2">Security Overview</h2>
             <KpiRow
               kpis={kpis}
               loading={loading}
@@ -143,35 +142,21 @@ export function DashboardPage() {
             />
           </div>
 
-          <AnimatedContent
-            distance={26}
-            duration={0.7}
-            ease="power3.out"
-            threshold={0.12}
-            initialOpacity={0}
-            className="grid grid-cols-1 gap-4 xl:grid-cols-3"
-          >
+          <div className="grid grid-cols-1 gap-2 xl:grid-cols-3">
             {/* The chart carries the most information, so it gets the width. */}
             <div className="xl:col-span-2">
               <Suspense
                 fallback={
-                  <Skeleton className="h-[340px] w-full" />
+                  <Skeleton className="h-[260px] w-full rounded border border-line bg-surface" />
                 }
               >
                 <ThreatActivityChart events={events} loading={loading} now={now} />
               </Suspense>
             </div>
             <SecurityScoreCard score={score} loading={loading} />
-          </AnimatedContent>
+          </div>
 
-          <AnimatedContent
-            distance={26}
-            duration={0.7}
-            ease="power3.out"
-            threshold={0.1}
-            initialOpacity={0}
-            className="grid grid-cols-1 items-start gap-4 xl:grid-cols-3"
-          >
+          <div className="grid grid-cols-1 gap-2 xl:grid-cols-3">
             <TopAttackSources
               sources={sources}
               loading={loading}
@@ -192,10 +177,9 @@ export function DashboardPage() {
                 paused={paused}
                 bufferedCount={bufferedCount}
                 onResume={() => setPaused(false)}
-                className="h-[600px]"
               />
             </div>
-          </AnimatedContent>
+          </div>
 
           <HostTable
             hosts={hostsWithRisk}
@@ -205,7 +189,7 @@ export function DashboardPage() {
             activeHostId={filterState.hosts[0] ?? null}
           />
 
-          <p className="px-1 pb-2 text-[11px] text-fg-dim">
+          <p className="px-1 pb-1 text-[10px] text-fg-dim">
             Connection: {status} · {events.length.toLocaleString('en-US')} events retained
           </p>
         </div>

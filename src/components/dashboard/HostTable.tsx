@@ -38,7 +38,7 @@ export function HostTable({ hosts, loading, now, onSelectHost, activeHostId }: H
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] border-collapse">
             <thead>
-              <tr className="border-b border-[var(--separator)]">
+              <tr className="border-b border-line">
                 {COLUMNS.map((column) => (
                   <th
                     key={column}
@@ -70,15 +70,15 @@ export function HostTable({ hosts, loading, now, onSelectHost, activeHostId }: H
                     }}
                     title={`Filter events for ${host.hostname}`}
                     className={cn(
-                      'cursor-pointer border-b border-[var(--separator)]/50 text-[11.5px] last:border-b-0',
+                      'cursor-pointer border-b border-line/50 text-[11.5px] last:border-b-0',
                       'transition-colors duration-100',
-                      isActive ? 'bg-accent/10' : 'hover:bg-[var(--fill-1)]',
+                      isActive ? 'bg-accent/10' : 'hover:bg-surface-hover',
                     )}
                   >
                     <td className="px-3 py-2 font-medium whitespace-nowrap text-fg">
                       <span className="flex items-center gap-1.5">
                         {host.hostname}
-                        <span className="rounded-full border border-[var(--separator)] px-1.5 text-[9px] text-fg-dim uppercase">
+                        <span className="rounded border border-line px-1 text-[9px] text-fg-dim uppercase">
                           {host.role}
                         </span>
                       </span>
@@ -104,7 +104,7 @@ export function HostTable({ hosts, loading, now, onSelectHost, activeHostId }: H
                     <td className="px-3 py-2 whitespace-nowrap">
                       <span
                         className={cn(
-                          'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase',
+                          'inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase',
                           riskStyles.badge,
                         )}
                         title={`Risk score ${host.riskScore} of 100 from ${host.eventCount} events`}

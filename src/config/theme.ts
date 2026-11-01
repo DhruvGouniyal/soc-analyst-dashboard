@@ -23,53 +23,42 @@ interface SeverityStyle {
   hex: string;
 }
 
-/**
- * Monochrome severity.
- *
- * Critical owns the only hue in the product (systemRed). Everything below it is
- * a descending greyscale intensity ramp — white, mid grey, dark grey — which is
- * why every badge also carries an icon and a written label: the ramp gives you
- * the at-a-glance ordering, the glyph and word give you the certainty.
- *
- * Chart hexes are lifted relative to the UI values because a thin 1.75px stroke
- * on pure black needs more luminance than a filled badge does to read.
- */
 export const SEVERITY_STYLES: Record<Severity, SeverityStyle> = {
   critical: {
-    badge: 'bg-crit/15 text-crit border-crit/45',
+    badge: 'bg-crit/15 text-crit border-crit/40',
     rail: 'bg-crit',
     dot: 'bg-crit',
     text: 'text-crit',
-    tint: 'bg-crit/10 border-crit/30',
+    tint: 'bg-crit/8 border-crit/25',
     bar: 'bg-crit',
-    hex: '#ff453a',
+    hex: '#e5484d',
   },
   high: {
-    badge: 'bg-white/14 text-white border-white/35',
-    rail: 'bg-white',
-    dot: 'bg-white',
-    text: 'text-white',
-    tint: 'bg-white/8 border-white/20',
-    bar: 'bg-white',
-    hex: '#ffffff',
+    badge: 'bg-high/15 text-high border-high/40',
+    rail: 'bg-high',
+    dot: 'bg-high',
+    text: 'text-high',
+    tint: 'bg-high/8 border-high/25',
+    bar: 'bg-high',
+    hex: '#ef7014',
   },
   medium: {
-    badge: 'bg-white/8 text-[#c7c7cc] border-white/20',
-    rail: 'bg-[#8e8e93]',
-    dot: 'bg-[#8e8e93]',
-    text: 'text-[#c7c7cc]',
-    tint: 'bg-white/5 border-white/12',
-    bar: 'bg-[#8e8e93]',
-    hex: '#8e8e93',
+    badge: 'bg-med/15 text-med border-med/40',
+    rail: 'bg-med',
+    dot: 'bg-med',
+    text: 'text-med',
+    tint: 'bg-med/8 border-med/25',
+    bar: 'bg-med',
+    hex: '#e0a11a',
   },
   low: {
-    badge: 'bg-white/5 text-[#8e8e93] border-white/12',
-    rail: 'bg-[#48484a]',
-    dot: 'bg-[#48484a]',
-    text: 'text-[#8e8e93]',
-    tint: 'bg-white/4 border-white/8',
-    bar: 'bg-[#5a5a5e]',
-    hex: '#6e6e73',
+    badge: 'bg-low/15 text-low border-low/40',
+    rail: 'bg-low',
+    dot: 'bg-low',
+    text: 'text-low',
+    tint: 'bg-low/8 border-low/25',
+    bar: 'bg-low',
+    hex: '#3b9eff',
   },
 };
 

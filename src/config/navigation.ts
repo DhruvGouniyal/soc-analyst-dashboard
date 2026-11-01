@@ -54,7 +54,7 @@ export const NAV_PRIMARY: NavItem[] = [
     icon: 'Flame',
     title: 'Incidents',
     subtitle: 'Correlated multi-stage attack chains',
-    implemented: false,
+    implemented: true,
   },
   {
     key: 'network',
@@ -62,7 +62,7 @@ export const NAV_PRIMARY: NavItem[] = [
     icon: 'Network',
     title: 'Network',
     subtitle: 'Flow analysis & connection monitoring',
-    implemented: false,
+    implemented: true,
   },
   {
     key: 'hosts',
@@ -78,7 +78,7 @@ export const NAV_PRIMARY: NavItem[] = [
     icon: 'Crosshair',
     title: 'Threat Intelligence',
     subtitle: 'Indicators, reputation & MITRE coverage',
-    implemented: false,
+    implemented: true,
   },
   {
     key: 'logs',
@@ -86,7 +86,7 @@ export const NAV_PRIMARY: NavItem[] = [
     icon: 'ScrollText',
     title: 'Logs',
     subtitle: 'Raw collector output & search',
-    implemented: false,
+    implemented: true,
   },
   {
     key: 'reports',
@@ -94,7 +94,7 @@ export const NAV_PRIMARY: NavItem[] = [
     icon: 'FileText',
     title: 'Reports',
     subtitle: 'Scheduled exports & executive summaries',
-    implemented: false,
+    implemented: true,
   },
 ];
 

@@ -8,7 +8,12 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { AlertsPage } from '@/pages/AlertsPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HostsPage } from '@/pages/HostsPage';
+import { IncidentsPage } from '@/pages/IncidentsPage';
+import { LogsPage } from '@/pages/LogsPage';
+import { NetworkPage } from '@/pages/NetworkPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
+import { ReportsPage } from '@/pages/ReportsPage';
+import { ThreatIntelPage } from '@/pages/ThreatIntelPage';
 import ClickSpark from '@/components/reactbits/ClickSpark';
 // Also ogl-backed: only high-tier devices ever fetch it.
 const SwarmCursor = lazy(() => import('@/components/reactbits/SwarmCursor'));
@@ -147,6 +152,16 @@ function ViewRouter({ view }: { view: ViewKey }) {
       return <AlertsPage />;
     case 'hosts':
       return <HostsPage />;
+    case 'incidents':
+      return <IncidentsPage />;
+    case 'network':
+      return <NetworkPage />;
+    case 'threat-intel':
+      return <ThreatIntelPage />;
+    case 'logs':
+      return <LogsPage />;
+    case 'reports':
+      return <ReportsPage />;
     default:
       return <PlaceholderPage view={view} />;
   }
